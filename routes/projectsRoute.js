@@ -17,17 +17,14 @@ router.get("/", (req, res) => {
       res.status(200).json(projects);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        message: "error found project",
-      });
+      next(err)
     });
 });
 
 //-----------------
 // GET Project by ID
 //-----------------
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
   projects
     .get(req.params.id)
     .then((project) => {
@@ -40,10 +37,7 @@ router.get("/:id", (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        message: "error found project",
-      });
+      next(err)
     });
 });
 
@@ -51,17 +45,14 @@ router.get("/:id", (req, res) => {
 // ADD new Project
 //-----------------
 
-router.post("/", (req, res) => {
+router.post("/", (req, res, next) => {
   projects
     .insert(req.body)
     .then((newProject) => {
       res.status(201).json(newProject);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        message: "error found project",
-      });
+      next(err)
     });
 });
 
@@ -69,7 +60,7 @@ router.post("/", (req, res) => {
 // Update Project
 //-----------------
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res, next) => {
   projects
     .update(req.params.id, req.body)
     .then((updated) => {
@@ -82,10 +73,7 @@ router.put("/:id", (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        message: "error found project",
-      });
+      next(err)
     });
 });
 
@@ -93,7 +81,7 @@ router.put("/:id", (req, res) => {
 // Delete Project
 //-----------------
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res, next) => {
   projects
     .remove(req.params.id)
     .then((deleted) => {
@@ -108,22 +96,17 @@ router.delete("/:id", (req, res) => {
       }
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).json({
-        message: "error delete project",
-      });
+      next(err)
     });
 });
 
-router.get('/:id/actions', (req, res) => {
+router.get('/:id/actions', (req, res, next) => {
     projects.getProjectActions(req.params.id)
         .then(action => {
             res.status(200).json(action)
         })
         .catch(err => {
-            res.status(500).json({
-                Message: 'Could not find your action'
-            })
+            next(err)
         })
 })
 
